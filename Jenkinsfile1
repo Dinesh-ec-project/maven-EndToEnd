@@ -1,73 +1,21 @@
 pipeline{
-
-agent any
-
+agent{
+label 'node1'
+}
 tools{
 maven 'maven3.8.6'
-
 }
-/*
-triggers{
-pollSCM('* * * * *')
-}
-*/
-options{
-timestamps()
-buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5'))
-}
-
-stages{
-
-  stage('CheckOutCode'){
-    steps{
-    git branch: 'development', credentialsId: '5f944dc3-9c1e-4cb0-be72-7b86d9d1749d', url: 'https://github.com/Dinesh-ec-project/maven-web-application.git'
-	}
-  }
-  
-  stage('Build'){
-  steps{
-  sh  "mvn clean package"
-  }
-  }
-/*
- stage('ExecuteSonarQubeReport'){
-  steps{
-  sh  "mvn clean sonar:sonar"
-  }
-  }
-  
-  stage('UploadArtifactsIntoNexus'){
-  steps{
-  sh  "mvn clean deploy"
-  }
-  }
-  */
-  
-  stage('DeployAppIntoTomcat'){
-  steps{
-  sshagent(['1592a54c-d371-402d-9760-b173e1da973a']) {
-   sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@15.168.15.43:/opt/apache-tomcat-9.0.71/webapps/"    
-  }
-  }
-  }
-}//Stages Closing
-/*
-post{
-
- success{
- emailext to: 'devopstrainingblr@gmail.com,mithuntechnologies@yahoo.com',
-          subject: "Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}.",
-          body: "Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}.",
-          replyTo: 'devopstrainingblr@gmail.com'
+stages
+{
+ stage('chechout the code')
+ {
+ git branch: 'development', url: 'https://github.com/Dinesh-ec-project/maven-EndToEnd.git'
  }
  
- failure{
- emailext to: 'devopstrainingblr@gmail.com,mithuntechnologies@yahoo.com',
-          subject: "Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}.",
-          body: "Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}.",
-          replyTo: 'devopstrainingblr@gmail.com'
+ stage'('Build')
+ {
+ sh "mvn clean package" 
  }
- 
 }
-*/
+
 }
