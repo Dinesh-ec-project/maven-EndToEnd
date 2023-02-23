@@ -12,8 +12,7 @@ stages
  git branch: 'development', url: 'https://github.com/Dinesh-ec-project/maven-EndToEnd.git'
  }
  
- stage'('Build')
- {
+ stage'('Build'){
  sh "mvn clean package" 
  }
 }
