@@ -9,11 +9,15 @@ stages
 {
  stage('chechout the code')
  {
- git branch: 'development', url: 'https://github.com/Dinesh-ec-project/maven-EndToEnd.git'
+  steps{
+  git branch: 'development', url: 'https://github.com/Dinesh-ec-project/maven-EndToEnd.git'
+  }
  }
  
  stage('Build'){
+ steps{
  sh "mvn clean package" 
+ }
  }
 }
 
